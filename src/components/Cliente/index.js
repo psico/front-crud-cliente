@@ -51,7 +51,7 @@ class Cliente extends Component {
             <div id="header-usuario">
                 <div className="user-info">
                     <h1>Olá {this.state.nome}</h1>
-                    <Link to="/cliente/new">Novo Cliente</Link>
+                    <Link to="/cliente/form">Novo Cliente</Link>
                 </div>
                 {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
                 <button onClick={() => this.logout()}>Deslogar</button>
