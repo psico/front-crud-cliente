@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Cliente from "./components/Cliente";
+import ClienteForm from "./components/ClienteForm";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/cliente" component={Cliente}/>
           {/*<Route exact path="/register" component={Register}/>*/}
-          {/*<Route exact path="/cliente/new" component={New}/>*/}
+          <Route exact path="/cliente/form" component={ClienteForm}/>
         </Switch>
       </BrowserRouter>
   );
