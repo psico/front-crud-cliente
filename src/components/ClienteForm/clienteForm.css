@@ -17,6 +17,13 @@ form.bloco input[type=text]{
     padding: 0 20px;
 }
 
+form.bloco select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 0 20px;
+}
+
 form.bloco button{
     padding: 10px 20px;
     border-radius: 5px;
