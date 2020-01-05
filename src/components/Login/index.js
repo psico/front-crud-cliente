@@ -22,7 +22,7 @@ class Login extends Component {
 
     componentDidMount() {
         //Verificar se tem alguem logado
-        if(this.state.login === true) {
+        if (this.state.login === true) {
             return this.props.history.replace('/cliente')
         }
     }
@@ -59,6 +59,11 @@ class Login extends Component {
                         }
                     }
                 )
+                .then(result => {
+                    if (result) {
+                        alert("Login e senha não conferem");
+                    }
+                })
         } catch (error) {
             alert(error.message);
         }
