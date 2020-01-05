@@ -49,8 +49,6 @@ class Cliente extends Component {
     }
 
     excluir = idUsuario => {
-        console.log('aki');
-        console.log(idUsuario);
         axios.delete('http://localhost:8080/usuario/' + idUsuario);
 
         let clientes = this.state.clientes.filter(cliente => cliente.idUsuario != idUsuario);
