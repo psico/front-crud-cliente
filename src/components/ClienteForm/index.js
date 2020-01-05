@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import "./clienteForm.css";
 import axios from 'axios';
+import TelefoneForm from "../TelefoneForm";
 
 class ClienteForm extends Component {
     constructor(props) {
@@ -18,22 +19,34 @@ class ClienteForm extends Component {
                 complemento: ''
             },
             ufs: ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE',
-                'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+                'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'],
+            telefones: []
         };
 
         this.cadastrar = this.cadastrar.bind(this);
+
+        this.telefoneFormState = this.telefoneFormState.bind(this);
+
+        this.persistirEndereco = this.persistirEndereco.bind(this);
+        this.persistirTelefone = this.persistirTelefone.bind(this);
     }
 
-    componentDidMount() {
-        // if (!firebase.getCurrent()) {
-        //     this.props.history.push('/');
-        //     return null;
-        // }
+    telefoneFormState(stateTelefone) {
+        console.log(this.state);
+        this.state.telefones.push(stateTelefone);
+        // this.state.apply()
+
+        // this.setState((state) => {
+        //     // Important: read `state` instead of `this.state` when updating.
+        //     return {count: state.count + 1}
+        // });
     }
 
     cadastrar = async (e) => {
         e.preventDefault();
         let usuario = {};
+
+        // console.log(this.state);
 
         if (this.state.nome !== "" &&
             this.state.cpf !== "") {
@@ -47,23 +60,9 @@ class ClienteForm extends Component {
             })
                 .then(usuario => {
                     this.usuario = usuario.data;
-                    // alert('Usuário salvo com sucesso');
-                    // console.log(usuario);
 
-                    axios.post('http://localhost:8080/endereco', {
-                        id: null,
-                        cep: this.state.endereco.cep,
-                        logradouro: this.state.endereco.logradouro,
-                        bairro: this.state.endereco.bairro,
-                        cidade: this.state.endereco.cidade,
-                        uf: this.state.endereco.uf,
-                        complemento: this.state.endereco.complemento,
-                        idUsuario: this.usuario.idUsuario
-                    })
-                        .then(endereco => {
-                            // console.log(endereco);
-                            // alert('Endereço salvo com sucesso');
-                        });
+                    this.persistirEndereco(usuario);
+                    this.persistirTelefone(usuario)
                 });
 
             // this.props.history.push('/cliente');
@@ -74,8 +73,44 @@ class ClienteForm extends Component {
         }
     };
 
+    persistirEndereco(usuario) {
+        axios.post('http://localhost:8080/endereco', {
+            id: null,
+            cep: this.state.endereco.cep,
+            logradouro: this.state.endereco.logradouro,
+            bairro: this.state.endereco.bairro,
+            cidade: this.state.endereco.cidade,
+            uf: this.state.endereco.uf,
+            complemento: this.state.endereco.complemento,
+            idUsuario: this.usuario.idUsuario
+        })
+            .then(endereco => {
+                // console.log(endereco);
+                // alert('Endereço salvo com sucesso');
+            });
+    }
+
+    persistirTelefone(usuario) {
+        this.state.telefones.map(telefone => {
+
+        axios.post('http://localhost:8080/telefone', {
+            id: null,
+            ddd: telefone.ddd,
+            ddi: telefone.ddi,
+            telefone: telefone.telefone,
+            idTipoTelefone: telefone.idTipoTelefone,
+            idUsuario: this.usuario.idUsuario
+        })
+            .then(telefone => {
+                console.log(telefone);
+                alert('Telefone salvo com sucesso');
+            });
+        });
+    }
+
     render() {
         let endereco = {...this.state.endereco};
+        let telefones = {...this.state.telefones};
 
         return (
             <div>
@@ -132,10 +167,10 @@ class ClienteForm extends Component {
                            }}/><br/>
                     <label>UF:</label><br/>
                     <select value={this.state.endereco.uf}
-                        onChange={(e) => {
-                            endereco.uf = e.target.value;
-                            this.setState({endereco})
-                        }}>{this.state.ufs.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
+                            onChange={(e) => {
+                                endereco.uf = e.target.value;
+                                this.setState({endereco})
+                            }}>{this.state.ufs.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
                     </select><br/>
                     <label>Complemento:</label><br/>
                     <input type="text" placeholder="Informe o complemento (Opcional)"
@@ -144,6 +179,15 @@ class ClienteForm extends Component {
                                endereco.complemento = e.target.value;
                                this.setState({endereco})
                            }}/><br/>
+
+                    <h1>Telefone</h1><br/>
+
+                    <TelefoneForm telefoneFormState={this.telefoneFormState} />
+
+                    <h2>Telefone Adicionados</h2>
+                    {this.state.telefones.map((telefone) =>
+                        <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
+                    }
 
                     <button type="submit">Salvar</button>
                 </form>
