@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import "./cliente.css";
+import axios from "axios";
 
 class Cliente extends Component {
 
@@ -12,6 +13,7 @@ class Cliente extends Component {
         };
 
         this.logout = this.logout.bind(this);
+        this.excluir = this.excluir.bind(this);
     }
 
     async componentDidMount() {
@@ -46,6 +48,15 @@ class Cliente extends Component {
         this.props.history.push('/');
     }
 
+    excluir = idUsuario => {
+        console.log('aki');
+        console.log(idUsuario);
+        axios.delete('http://localhost:8080/usuario/' + idUsuario);
+
+        let clientes = this.state.clientes.filter(cliente => cliente.idUsuario != idUsuario);
+        this.setState({ clientes: clientes });
+    }
+
     render() {
         return (
             <div>
@@ -56,13 +67,11 @@ class Cliente extends Component {
                 <div className="bloco">
                     <div className="titulo">
                         <h1>Lista de Clientes</h1>
-                        <Link to="/cliente/form">Novo Cliente</Link>
+                        <Link className="botao" to="/cliente/form">Novo Cliente</Link>
                         {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
                         {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
                     </div>
                 </div>
-
-                {/*<div className="bloco">*/}
 
                 {this.state.clientes.map((cliente) => {
                     return (
@@ -70,14 +79,14 @@ class Cliente extends Component {
                             <span> <strong>Nome:</strong> {cliente.nome}</span>
                             <span> <strong>CPF:</strong> {cliente.cpf}</span>
 
-                            {/*<img src={post.image} alt="Capa do post"/>*/}
-                            {/*<footer>*/}
-                            {/*    <p>{post.descricao}</p>*/}
-                            {/*</footer>*/}
+                            <br/>
+                            <div className="titulo">
+                                <Link className="botao" to="/cliente/form">Editar</Link>
+                                <button className="botao" onClick={() => this.excluir(cliente.idUsuario)}>Excluir</button>
+                            </div>
                         </div>
                     )
                 })}
-                {/*</div>*/}
 
             </div>
         )
