@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import "./telefoneForm.css";
 
-import axios from 'axios';
-
 class TelefoneForm extends Component {
 
     constructor(props) {
@@ -17,15 +15,8 @@ class TelefoneForm extends Component {
             tiposTelefone: []
         }
 
-        // this.parentStateChange = this.parentStateChange.bind(this);
-        // this.telefoneChange = this.telefoneChange.bind(this);
-
         this.handleChange = this.handleChange.bind(this);
     }
-
-    // parentStateChange() {
-    //     this.props.telefoneChange(this.state);
-    // }
 
     componentDidMount() {
         let state = this.state;
