@@ -4,22 +4,26 @@ import './home.css';
 class Home extends Component {
     render() {
         return (
-            <div>
-                <p>Bem-vindo ao projeto de exemplo Crud Cliente.</p>
+            <div id="home">
+                <p>Bem-vindo ao projeto de exemplo <strong>CRUD Cliente</strong>.</p>
                 <p>Este projeto exemplica o uso de uma estrutura REST com REACT, as tecnólogias usadas foram:</p>
-                <p>
-                    - Banco de dados: PostGreSQL e Power Architect (Modelagem).<br/>
-                    - Backend: Java, Springboot, JPA, Liquibases.<br/>
-                    - Frontend: Javascript, React, Axios.
-                </p>
+                <ul>
+                    <li><strong>Banco de dados:</strong> PostGreSQL e Power Architect (Modelagem).</li>
+                    <li><strong>Backend:</strong> Java, Springboot, JPA, Liquibases.</li>
+                    <li><strong>Frontend:</strong> Javascript, React, Axios.</li>
+                </ul>
 
-                <p>
-                    Explicando algumas escolhas:<br/>
-                    - Por que não react-native? Para ganhar tempo no desenvolvimento e não ter que se preocupar com
-                    maquinas virtuais e compatibilidade e também por que não foi pedido.<br/>
-                    - Por que o BD PostgreSQL? É um dos mais simples e rapidos de configurar sem surpresas, seja na
-                    instalação seja para configurar o backend.
-                </p>
+                <p>Explicando algumas escolhas:</p>
+                <ul>
+                    <li>Por que não react-native? <br/>
+                        Para ganhar tempo no desenvolvimento e não ter que se preocupar com maquinas virtuais e
+                        compatibilidade e também por que não foi pedido.
+                    </li>
+                    <li>Por que o BD PostgreSQL? <br/>
+                        É um dos mais simples e rapidos de configurar sem surpresas, seja na instalação seja para
+                        configurar o backend.
+                    </li>
+                </ul>
             </div>
         );
     }

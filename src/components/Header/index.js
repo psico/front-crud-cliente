@@ -8,7 +8,7 @@ class Header extends Component {
             <header id="main-header">
                 <div className="header-content">
                     <Link to="/">
-                        Crud Cliente
+                        CRUD Cliente
                     </Link>
                     <Link to="/login">
                         Entrar

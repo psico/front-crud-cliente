@@ -48,32 +48,37 @@ class Cliente extends Component {
 
     render() {
         return (
-            <div id="header-usuario">
-                <div className="user-info">
-                    <h1>Olá {this.state.nome}</h1>
-                    <Link to="/cliente/form">Novo Cliente</Link>
-                </div>
-                {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
-                <button onClick={() => this.logout()}>Deslogar</button>
+            <div>
+                {/*<div className="user-info">*/}
+                {/*    <h1>Olá {this.state.nome}</h1>*/}
+                {/*</div>*/}
 
-                <section id="cliente">
-                    {this.state.clientes.map((cliente) => {
-                        return (
-                            <article key={cliente.idUsuario}>
-                                <header>
-                                    <div className="title">
-                                        <strong>{cliente.nome}</strong>
-                                        <span>Autor: {cliente.cpf}</span>
-                                    </div>
-                                </header>
-                                {/*<img src={post.image} alt="Capa do post"/>*/}
-                                {/*<footer>*/}
-                                {/*    <p>{post.descricao}</p>*/}
-                                {/*</footer>*/}
-                            </article>
-                        )
-                    })}
-                </section>
+                <div className="bloco">
+                    <div className="titulo">
+                        <h1>Lista de Clientes</h1>
+                        <Link to="/cliente/form">Novo Cliente</Link>
+                        {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
+                        {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
+                    </div>
+                </div>
+
+                {/*<div className="bloco">*/}
+
+                {this.state.clientes.map((cliente) => {
+                    return (
+                        <div className="bloco" key={cliente.idUsuario}>
+                            <span> <strong>Nome:</strong> {cliente.nome}</span>
+                            <span> <strong>CPF:</strong> {cliente.cpf}</span>
+
+                            {/*<img src={post.image} alt="Capa do post"/>*/}
+                            {/*<footer>*/}
+                            {/*    <p>{post.descricao}</p>*/}
+                            {/*</footer>*/}
+                        </div>
+                    )
+                })}
+                {/*</div>*/}
+
             </div>
         )
     }

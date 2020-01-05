@@ -48,19 +48,25 @@ class ClienteForm extends Component {
 
     render() {
         return (
-            <div id="novo">
-                <header>
-                    <Link to="/cliente">Voltar</Link>
-                </header>
-                <form onSubmit={this.cadastrar} id="novo-cliente">
+            <div>
+                <div className="bloco">
+                    <div className="titulo">
+                        <h1>Cadrasto de Clientes</h1>
+                        <Link to="/cliente">Voltar</Link>
+                        {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
+                        {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
+                    </div>
+                </div>
+
+                <form onSubmit={this.cadastrar} className="bloco">
 
                     <label>Nome:</label><br/>
                     <input type="text" placeholder="Nome do Cliente" value={this.state.nome} autoFocus
                            onChange={(e) => this.setState({nome: e.target.value})}/><br/>
 
                     <label>CPF:</label><br/>
-                    <textarea placeholder="CPF do cliente" value={this.state.cpf}
-                              onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
+                    <input type="text" placeholder="CPF do cliente" value={this.state.cpf}
+                           onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
                     <button type="submit">Cadastrar</button>
                 </form>
