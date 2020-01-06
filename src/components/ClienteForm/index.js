@@ -5,6 +5,7 @@ import axios from 'axios';
 import TelefoneForm from "../TelefoneForm";
 import EmailForm from "../EmailForm";
 import InputMask from "react-input-mask";
+import StatusLogin from "../StatusLogin";
 
 class ClienteForm extends Component {
     constructor(props) {
@@ -183,9 +184,8 @@ class ClienteForm extends Component {
                     <div className="titulo">
                         <h1>Cadrasto de Clientes</h1>&nbsp;
                         <Link className="botao" to="/cliente">Voltar</Link>
-                        {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
-                        {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
                     </div>
+                    <StatusLogin />
                 </div>
 
                 <form onSubmit={this.cadastrar} className="bloco">

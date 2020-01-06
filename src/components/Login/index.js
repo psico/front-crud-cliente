@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Link, withRouter} from "react-router-dom";
-// import firebase from "../../firebase";
 import "./login.css";
 
 class Login extends Component {
@@ -41,6 +40,7 @@ class Login extends Component {
                 .then(
                     (result) => {
                         result.map(usuario => {
+                            console.log(usuario.nome === nome && usuario.senha === senha);
                             //Validação simples para ver se usuário e senha conferem
                             if (usuario.nome === nome && usuario.senha === senha) {
                                 this.setState({
@@ -50,6 +50,10 @@ class Login extends Component {
                                     cpf: result.cpf,
                                     idPerfil: result.idPerfil,
                                 });
+
+                                localStorage.setItem("idUsuario", usuario.idUsuario);
+                                localStorage.setItem("nome", usuario.nome);
+                                localStorage.setItem("idPerfil", usuario.idPerfil);
                             }
                         });
                         if (this.state.login === false) {

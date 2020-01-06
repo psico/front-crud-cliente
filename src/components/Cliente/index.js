@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import "./cliente.css";
 import axios from "axios";
+import StatusLogin from "../StatusLogin";
 
 class Cliente extends Component {
 
@@ -37,12 +38,9 @@ class Cliente extends Component {
     }
 
     logout = async () => {
-        // await firebase.logout()
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
-        //
-        // localStorage.removeItem("nome");
+        localStorage.removeItem("idUsuario");
+        localStorage.removeItem("nome");
+        localStorage.removeItem("idPerfil");
 
         this.props.history.push('/');
     }
@@ -51,23 +49,18 @@ class Cliente extends Component {
         axios.delete('http://localhost:8080/usuario/' + idUsuario);
 
         let clientes = this.state.clientes.filter(cliente => cliente.idUsuario !== idUsuario);
-        this.setState({ clientes: clientes });
+        this.setState({clientes: clientes});
     }
 
     render() {
         return (
             <div>
-                {/*<div className="user-info">*/}
-                {/*    <h1>Olá {this.state.nome}</h1>*/}
-                {/*</div>*/}
-
                 <div className="bloco">
                     <div className="titulo">
                         <h1>Lista de Clientes</h1>&nbsp;
                         <Link className="botao" to="/cliente/form">Novo Cliente</Link>
-                        {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
-                        {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
                     </div>
+                    <StatusLogin />
                 </div>
 
                 {this.state.clientes.map((cliente) => {
