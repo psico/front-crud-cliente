@@ -200,105 +200,114 @@ class ClienteForm extends Component {
     render() {
         let endereco = {...this.state.endereco};
 
-        return (
-            <div>
-                <div className="bloco">
-                    <div className="titulo">
-                        <h1>Cadrasto de Clientes</h1>&nbsp;
-                        <Link className="botao" to="/cliente">Voltar</Link>
+        if (localStorage.getItem("idPerfil") !== "1") {
+            return (
+                <div>
+                    <div className="bloco">Você não tem permissão de acesso.</div>
+                </div>);
+        } else {
+
+            return (
+                <div>
+                    <div className="bloco">
+                        <div className="titulo">
+                            <h1>Cadrasto de Clientes</h1>&nbsp;
+                            <Link className="botao" to="/cliente">Voltar</Link>
+                        </div>
+                        <StatusLogin/>
                     </div>
-                    <StatusLogin/>
-                </div>
 
-                <form onSubmit={this.cadastrar} className="bloco">
-                    <h1>Usuário</h1><br/>
+                    <form onSubmit={this.cadastrar} className="bloco">
+                        <h1>Usuário</h1><br/>
 
-                    <label>Nome:</label><br/>
-                    <input type="text" minLength="3" maxLength="100" placeholder="Nome do Cliente"
-                           value={this.state.nome} autoFocus
-                           onChange={(e) => this.setState({nome: e.target.value})}/><br/>
-                    <label>CPF:</label><br/>
-                    <InputMask mask="999.999.999-99" type="text" placeholder="CPF do cliente"
-                               value={this.state.cpf}
-                               onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
+                        <label>Nome:</label><br/>
+                        <input type="text" minLength="3" maxLength="100" placeholder="Nome do Cliente"
+                               value={this.state.nome} autoFocus
+                               onChange={(e) => this.setState({nome: e.target.value})}/><br/>
+                        <label>CPF:</label><br/>
+                        <InputMask mask="999.999.999-99" type="text" placeholder="CPF do cliente"
+                                   value={this.state.cpf}
+                                   onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
-                    <br/><br/>
-                    <h1>Endereço</h1><br/>
+                        <br/><br/>
+                        <h1>Endereço</h1><br/>
 
-                    <label>CEP:</label><br/>
-                    <InputMask mask="99999-999" type="text" placeholder="Informe o CEP"
-                               value={this.state.endereco.cep}
+                        <label>CEP:</label><br/>
+                        <InputMask mask="99999-999" type="text" placeholder="Informe o CEP"
+                                   value={this.state.endereco.cep}
+                                   onChange={(e) => {
+                                       endereco.cep = e.target.value;
+                                       this.setState({endereco})
+                                   }}
+                                   onBlur={(e) => this.consultarCep(e.target.value)}
+                        /><br/>
+                        <label>Logradouro:</label><br/>
+                        <input type="text" placeholder="Informe o logradouro"
+                               value={this.state.endereco.logradouro}
                                onChange={(e) => {
-                                   endereco.cep = e.target.value;
+                                   endereco.logradouro = e.target.value;
                                    this.setState({endereco})
-                               }}
-                               onBlur={(e) => this.consultarCep(e.target.value)}
-                    /><br/>
-                    <label>Logradouro:</label><br/>
-                    <input type="text" placeholder="Informe o logradouro"
-                           value={this.state.endereco.logradouro}
-                           onChange={(e) => {
-                               endereco.logradouro = e.target.value;
-                               this.setState({endereco})
-                           }}/><br/>
-                    <label>Bairro:</label><br/>
-                    <input type="text" placeholder="Informe o bairro"
-                           value={this.state.endereco.bairro}
-                           onChange={(e) => {
-                               endereco.bairro = e.target.value;
-                               this.setState({endereco})
-                           }}/><br/>
-                    <label>Cidade:</label><br/>
-                    <input type="text" placeholder="Informe o cidade"
-                           value={this.state.endereco.cidade}
-                           onChange={(e) => {
-                               endereco.cidade = e.target.value;
-                               this.setState({endereco})
-                           }}/><br/>
-                    <label>UF:</label><br/>
-                    <select value={this.state.endereco.uf}
-                            onChange={(e) => {
-                                endereco.uf = e.target.value;
-                                this.setState({endereco})
-                            }}>{this.state.ufs.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
-                    </select><br/>
-                    <label>Complemento:</label><br/>
-                    <input type="text" placeholder="Informe o complemento (Opcional)"
-                           value={this.state.endereco.complemento}
-                           onChange={(e) => {
-                               endereco.complemento = e.target.value;
-                               this.setState({endereco})
-                           }}/><br/>
+                               }}/><br/>
+                        <label>Bairro:</label><br/>
+                        <input type="text" placeholder="Informe o bairro"
+                               value={this.state.endereco.bairro}
+                               onChange={(e) => {
+                                   endereco.bairro = e.target.value;
+                                   this.setState({endereco})
+                               }}/><br/>
+                        <label>Cidade:</label><br/>
+                        <input type="text" placeholder="Informe o cidade"
+                               value={this.state.endereco.cidade}
+                               onChange={(e) => {
+                                   endereco.cidade = e.target.value;
+                                   this.setState({endereco})
+                               }}/><br/>
+                        <label>UF:</label><br/>
+                        <select value={this.state.endereco.uf}
+                                onChange={(e) => {
+                                    endereco.uf = e.target.value;
+                                    this.setState({endereco})
+                                }}>{this.state.ufs.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
+                        </select><br/>
+                        <label>Complemento:</label><br/>
+                        <input type="text" placeholder="Informe o complemento (Opcional)"
+                               value={this.state.endereco.complemento}
+                               onChange={(e) => {
+                                   endereco.complemento = e.target.value;
+                                   this.setState({endereco})
+                               }}/><br/>
 
-                    <br/><br/>
-                    <h1>Telefone</h1><br/>
+                        <br/><br/>
+                        <h1>Telefone</h1><br/>
 
-                    <TelefoneForm telefoneFormState={this.telefoneFormState}/>
+                        <TelefoneForm telefoneFormState={this.telefoneFormState}/>
 
-                    <h2>Telefone Adicionados</h2>
-                    {this.state.telefones.length === 0 ?
-                        <div>Nenhum telefone adicionado</div>
-                        : this.state.telefones.map((telefone) =>
-                            <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
-                    }
+                        <h2>Telefone Adicionados</h2>
+                        {this.state.telefones.length === 0 ?
+                            <div>Nenhum telefone adicionado</div>
+                            : this.state.telefones.map((telefone) =>
+                                <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
+                        }
 
-                    <br/><br/>
-                    <h1>E-Mail</h1><br/>
+                        <br/><br/>
+                        <h1>E-Mail</h1><br/>
 
-                    <EmailForm emailFormState={this.emailFormState}/>
-                    <h2>E-mails Adicionados</h2>
-                    {this.state.emails.length === 0 ?
-                        <div>Nenhum e-mail adicionado</div>
-                        :
-                        this.state.emails.map(email =>
-                            <div key={email.descricao}>{email.descricao}</div>
-                        )}
+                        <EmailForm emailFormState={this.emailFormState}/>
+                        <h2>E-mails Adicionados</h2>
+                        {this.state.emails.length === 0 ?
+                            <div>Nenhum e-mail adicionado</div>
+                            :
+                            this.state.emails.map(email =>
+                                <div key={email.descricao}>{email.descricao}</div>
+                            )}
 
-                    <br/><br/><br/>
-                    <button type="submit">Salvar</button>
-                </form>
-            </div>
-        )
+                        <br/><br/><br/>
+                        <button type="submit">Salvar</button>
+                    </form>
+                </div>
+            )
+
+        }
     }
 }
 

@@ -10,10 +10,10 @@ class Cliente extends Component {
         super(props);
         this.state = {
             nome: localStorage.nome,
+            idPerfil: localStorage.idPerfil,
             clientes: []
         };
 
-        this.logout = this.logout.bind(this);
         this.excluir = this.excluir.bind(this);
     }
 
@@ -75,14 +75,6 @@ class Cliente extends Component {
         return response;
     }
 
-    logout = async () => {
-        localStorage.removeItem("idUsuario");
-        localStorage.removeItem("nome");
-        localStorage.removeItem("idPerfil");
-
-        this.props.history.push('/');
-    }
-
     excluir = idUsuario => {
         axios.delete('http://localhost:8080/usuario/' + idUsuario);
 
@@ -96,7 +88,11 @@ class Cliente extends Component {
                 <div className="bloco">
                     <div className="titulo">
                         <h1>Lista de Clientes</h1>&nbsp;
-                        <Link className="botao" to="/cliente/form">Novo Cliente</Link>
+                        {this.state.idPerfil === "1" ?
+                            <Link className="botao" to="/cliente/form">Novo Cliente</Link>
+                            :
+                            <p>Somente Admin pode cadastrar cliente</p>
+                        }
                     </div>
                     <StatusLogin/>
                 </div>
@@ -112,10 +108,14 @@ class Cliente extends Component {
                             {/*)}</span>*/}
 
                             <br/>
-                            <div className="titulo">
-                                <Link className="botao" to="/cliente/form">Editar</Link> &nbsp;
-                                <div className="botao" onClick={() => this.excluir(cliente.idUsuario)}>Excluir</div>
-                            </div>
+                            {this.state.idPerfil === "1" ?
+                                <div className="titulo">
+                                    <Link className="botao" to="/cliente/form">Editar</Link> &nbsp;
+                                    <div className="botao" onClick={() => this.excluir(cliente.idUsuario)}>Excluir</div>
+                                </div>
+                                :
+                                <p>Somente Admin pode editar e excluir</p>
+                            }
                         </div>
                     )
                 })}

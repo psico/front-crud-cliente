@@ -2,6 +2,14 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 
 class StatusLogin extends Component {
+    logout = () => {
+        localStorage.removeItem("idUsuario");
+        localStorage.removeItem("nome");
+        localStorage.removeItem("idPerfil");
+
+        this.props.history.push('/');
+    }
+
     render() {
         return (
             <div className="titulo">
