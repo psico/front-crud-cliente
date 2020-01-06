@@ -3,6 +3,7 @@ import {Link, withRouter} from "react-router-dom";
 import "./clienteForm.css";
 import axios from 'axios';
 import TelefoneForm from "../TelefoneForm";
+import EmailForm from "../EmailForm";
 
 class ClienteForm extends Component {
     constructor(props) {
@@ -20,26 +21,30 @@ class ClienteForm extends Component {
             },
             ufs: ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE',
                 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'],
-            telefones: []
+            telefones: [],
+            emails: []
         };
 
         this.cadastrar = this.cadastrar.bind(this);
 
         this.telefoneFormState = this.telefoneFormState.bind(this);
+        this.emailFormState = this.emailFormState.bind(this);
 
         this.persistirEndereco = this.persistirEndereco.bind(this);
         this.persistirTelefone = this.persistirTelefone.bind(this);
+        this.persistirEmail = this.persistirEmail.bind(this);
     }
 
     telefoneFormState(stateTelefone) {
-        console.log(this.state);
-        this.state.telefones.push(stateTelefone);
-        // this.state.apply()
+        let state = this.state;
+        state.telefones.push(stateTelefone);
+        this.setState(state);
+    }
 
-        // this.setState((state) => {
-        //     // Important: read `state` instead of `this.state` when updating.
-        //     return {count: state.count + 1}
-        // });
+    emailFormState(stateEmail) {
+        let state = this.state;
+        state.state.emails.push(stateEmail);
+        this.setState(state);
     }
 
     cadastrar = async (e) => {
@@ -62,9 +67,14 @@ class ClienteForm extends Component {
                     this.usuario = usuario.data;
 
                     this.persistirEndereco(usuario);
-                    this.persistirTelefone(usuario)
+                    this.persistirTelefone(usuario);
+                    this.persistirEmail(usuario);
+
+                    alert('Dados salvos com sucesso')
+                    window.location.href = 'http://localhost:3000/cliente';
                 });
 
+            // alert('Dados salvos com sucesso')
             // this.props.history.push('/cliente');
         } else {
             this.setState({
@@ -93,18 +103,36 @@ class ClienteForm extends Component {
     persistirTelefone(usuario) {
         this.state.telefones.map(telefone => {
 
-        axios.post('http://localhost:8080/telefone', {
-            id: null,
-            ddd: telefone.ddd,
-            ddi: telefone.ddi,
-            telefone: telefone.telefone,
-            idTipoTelefone: telefone.idTipoTelefone,
-            idUsuario: this.usuario.idUsuario
-        })
-            .then(telefone => {
-                console.log(telefone);
-                alert('Telefone salvo com sucesso');
-            });
+            axios.post('http://localhost:8080/telefone', {
+                id: null,
+                ddd: telefone.ddd,
+                ddi: telefone.ddi,
+                telefone: telefone.telefone,
+                idTipoTelefone: telefone.idTipoTelefone,
+                idUsuario: this.usuario.idUsuario
+            })
+                .then(telefone => {
+                    // console.log(telefone);
+                    // alert('Telefone salvo com sucesso');
+                });
+        });
+    }
+
+    persistirEmail(usuario) {
+        let emailPrincipal = true;
+
+        this.state.emails.map(email => {
+            axios.post('http://localhost:8080/email', {
+                id: null,
+                descricao: email.descricao,
+                principal: emailPrincipal,
+                idUsuario: this.usuario.idUsuario
+            })
+                .then(email => {
+                    // console.log(email);
+                    // alert('E-mail salvo com sucesso');
+                });
+            emailPrincipal = false;
         });
     }
 
@@ -116,8 +144,8 @@ class ClienteForm extends Component {
             <div>
                 <div className="bloco">
                     <div className="titulo">
-                        <h1>Cadrasto de Clientes</h1>
-                        <Link to="/cliente">Voltar</Link>
+                        <h1>Cadrasto de Clientes</h1>&nbsp;
+                        <Link className="botao" to="/cliente">Voltar</Link>
                         {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
                         {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
                     </div>
@@ -135,6 +163,7 @@ class ClienteForm extends Component {
                            value={this.state.cpf}
                            onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
+                    <br/><br/>
                     <h1>Endereço</h1><br/>
 
                     <label>CEP:</label><br/>
@@ -180,14 +209,24 @@ class ClienteForm extends Component {
                                this.setState({endereco})
                            }}/><br/>
 
+                    <br/><br/>
                     <h1>Telefone</h1><br/>
 
-                    <TelefoneForm telefoneFormState={this.telefoneFormState} />
+                    <TelefoneForm telefoneFormState={this.telefoneFormState}/>
 
                     <h2>Telefone Adicionados</h2>
                     {this.state.telefones.map((telefone) =>
                         <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
                     }
+
+                    <br/><br/>
+                    <h1>E-Mail</h1><br/>
+
+                    <EmailForm emailFormState={this.emailFormState}/>
+                    <h2>E-mails Adicionados</h2>
+                    {this.state.emails.map(email =>
+                        <div key={email.descricao}>{email.descricao}</div>
+                    )}
 
                     <button type="submit">Salvar</button>
                 </form>
