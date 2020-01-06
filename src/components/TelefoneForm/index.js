@@ -72,7 +72,7 @@ class TelefoneForm extends Component {
                             value={tipoTelefone.idTipoTelefone}>{tipoTelefone.descricao}</option>)}
             </select><br/>
 
-            <button onClick={(e) => this.handleChange(e)}>Adicionar Telefone</button>
+            <div className="botao" onClick={(e) => this.handleChange(e)}>Adicionar Telefone</div>
         </div>);
     }
 }
