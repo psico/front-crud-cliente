@@ -64,7 +64,7 @@ class Cliente extends Component {
 
                 <div className="bloco">
                     <div className="titulo">
-                        <h1>Lista de Clientes</h1>
+                        <h1>Lista de Clientes</h1>&nbsp;
                         <Link className="botao" to="/cliente/form">Novo Cliente</Link>
                         {/*<p>Logado com: {firebase.getCurrent()}</p>*/}
                         {/*<button onClick={() => this.logout()}>Deslogar</button>*/}
@@ -79,8 +79,8 @@ class Cliente extends Component {
 
                             <br/>
                             <div className="titulo">
-                                <Link className="botao" to="/cliente/form">Editar</Link>
-                                <button className="botao" onClick={() => this.excluir(cliente.idUsuario)}>Excluir</button>
+                                <Link className="botao" to="/cliente/form">Editar</Link> &nbsp;
+                                <div className="botao" onClick={() => this.excluir(cliente.idUsuario)}>Excluir</div>
                             </div>
                         </div>
                     )
