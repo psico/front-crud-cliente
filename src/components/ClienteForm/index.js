@@ -9,7 +9,7 @@ class ClienteForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            formValido: true,
+            formValido: false,
             nome: '',
             cpf: '',
             endereco: {
@@ -60,40 +60,39 @@ class ClienteForm extends Component {
             this.state.endereco.cidade === "" ||
             this.state.endereco.uf === ""
         ) {
-            this.state.formValido = false;
-            alertMensagem +="\n - Existe campos obrigatórios não preenchidos.";
+            alertMensagem += "\n - Existe campos obrigatórios não preenchidos.";
         }
 
-        if(this.state.nome.length < 3 || this.state.nome.length > 100) {
-            this.state.formValido = false;
-            alertMensagem +="\n - O tamanho do campo nome é invalido.";
+        if (this.state.nome.length < 3 || this.state.nome.length > 100) {
+            alertMensagem += "\n - O tamanho do campo nome é invalido.";
         }
 
-        if(this.state.nome.cpf.length != 11) {
-            this.state.formValido = false;
-            alertMensagem +="\n - CPF com tamanho inválido.";
+        if (this.state.cpf.length !== 11) {
+            alertMensagem += "\n - CPF com tamanho invalido.";
         }
 
-        if(this.state.telefones.length === 0) {
-            this.state.formValido = false;
+        if (this.state.telefones.length === 0) {
             alertMensagem += "\n - Adicione ao menos 1 telefone.";
         }
 
-        if(this.state.emails.length === 0) {
-            this.state.formValido = false;
+        if (this.state.emails.length === 0) {
             alertMensagem += "\n - Adicione ao menos 1 e-mail.";
         }
 
-        alert(alertMensagem);
+        if (alertMensagem !== '') {
+            this.setState({formValido: false});
+            alert(alertMensagem);
+            return false;
+        } else {
+            this.setState({formValido: true});
+            return true;
+        }
     }
 
     cadastrar = async (e) => {
         e.preventDefault();
 
-        let formValido = false;
-
-        this.validaForm();
-        if (this.formValido) {
+        if (this.validaForm()) {
 
             axios.post('http://localhost:8080/usuario', {
                 id: null,
@@ -254,8 +253,8 @@ class ClienteForm extends Component {
                     <h2>Telefone Adicionados</h2>
                     {this.state.telefones.length === 0 ?
                         <div>Nenhum telefone adicionado</div>
-                        :this.state.telefones.map((telefone) =>
-                        <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
+                        : this.state.telefones.map((telefone) =>
+                            <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
                     }
 
                     <br/><br/>
