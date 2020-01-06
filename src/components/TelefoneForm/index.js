@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import "./telefoneForm.css";
 
 class TelefoneForm extends Component {
@@ -25,7 +25,6 @@ class TelefoneForm extends Component {
         fetch("http://localhost:8080/tipoTelefone")
             .then(res => res.json())
             .then(result => {
-                console.log(result);
                 result.map(tipoTelefone => {
                     state.tiposTelefone.push({
                         idTipoTelefone: tipoTelefone.idTipoTelefone,
@@ -38,7 +37,6 @@ class TelefoneForm extends Component {
     }
 
     handleChange(e) {
-        // e.preventDefault();
         this.props.telefoneFormState(this.state);
     }
 

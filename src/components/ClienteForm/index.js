@@ -43,15 +43,12 @@ class ClienteForm extends Component {
 
     emailFormState(stateEmail) {
         let state = this.state;
-        state.state.emails.push(stateEmail);
+        state.emails.push(stateEmail);
         this.setState(state);
     }
 
     cadastrar = async (e) => {
         e.preventDefault();
-        let usuario = {};
-
-        // console.log(this.state);
 
         if (this.state.nome !== "" &&
             this.state.cpf !== "") {
@@ -102,7 +99,6 @@ class ClienteForm extends Component {
 
     persistirTelefone(usuario) {
         this.state.telefones.map(telefone => {
-
             axios.post('http://localhost:8080/telefone', {
                 id: null,
                 ddd: telefone.ddd,
@@ -138,7 +134,6 @@ class ClienteForm extends Component {
 
     render() {
         let endereco = {...this.state.endereco};
-        let telefones = {...this.state.telefones};
 
         return (
             <div>
@@ -215,7 +210,9 @@ class ClienteForm extends Component {
                     <TelefoneForm telefoneFormState={this.telefoneFormState}/>
 
                     <h2>Telefone Adicionados</h2>
-                    {this.state.telefones.map((telefone) =>
+                    {this.state.telefones == '' ?
+                        <div>Nenhum telefone adicionado</div>
+                        :this.state.telefones.map((telefone) =>
                         <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
                     }
 
@@ -224,9 +221,12 @@ class ClienteForm extends Component {
 
                     <EmailForm emailFormState={this.emailFormState}/>
                     <h2>E-mails Adicionados</h2>
-                    {this.state.emails.map(email =>
-                        <div key={email.descricao}>{email.descricao}</div>
-                    )}
+                    {this.state.emails == '' ?
+                        <div>Nenhum e-mail adicionado</div>
+                        :
+                        this.state.emails.map(email =>
+                            <div key={email.descricao}>{email.descricao}</div>
+                        )}
 
                     <br/><br/><br/>
                     <button type="submit">Salvar</button>

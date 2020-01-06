@@ -23,7 +23,6 @@ class Cliente extends Component {
         fetch("http://localhost:8080/usuario")
             .then(res => res.json())
             .then(result => {
-                console.log(result);
                 result.map(cliente => {
                     state.clientes.push({
                         idUsuario: cliente.idUsuario,
@@ -51,7 +50,7 @@ class Cliente extends Component {
     excluir = idUsuario => {
         axios.delete('http://localhost:8080/usuario/' + idUsuario);
 
-        let clientes = this.state.clientes.filter(cliente => cliente.idUsuario != idUsuario);
+        let clientes = this.state.clientes.filter(cliente => cliente.idUsuario !== idUsuario);
         this.setState({ clientes: clientes });
     }
 
