@@ -9,6 +9,7 @@ class ClienteForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            formValido: true,
             nome: '',
             cpf: '',
             endereco: {
@@ -25,6 +26,7 @@ class ClienteForm extends Component {
             emails: []
         };
 
+        this.validaForm = this.validaForm.bind(this);
         this.cadastrar = this.cadastrar.bind(this);
 
         this.telefoneFormState = this.telefoneFormState.bind(this);
@@ -47,11 +49,51 @@ class ClienteForm extends Component {
         this.setState(state);
     }
 
+    validaForm() {
+        let alertMensagem = '';
+
+        if (this.state.nome === "" ||
+            this.state.cpf === "" ||
+            this.state.endereco.cep === "" ||
+            this.state.endereco.bairro === "" ||
+            this.state.endereco.logradouro === "" ||
+            this.state.endereco.cidade === "" ||
+            this.state.endereco.uf === ""
+        ) {
+            this.state.formValido = false;
+            alertMensagem +="\n - Existe campos obrigatórios não preenchidos.";
+        }
+
+        if(this.state.nome.length < 3 || this.state.nome.length > 100) {
+            this.state.formValido = false;
+            alertMensagem +="\n - O tamanho do campo nome é invalido.";
+        }
+
+        if(this.state.nome.cpf.length != 11) {
+            this.state.formValido = false;
+            alertMensagem +="\n - CPF com tamanho inválido.";
+        }
+
+        if(this.state.telefones.length === 0) {
+            this.state.formValido = false;
+            alertMensagem += "\n - Adicione ao menos 1 telefone.";
+        }
+
+        if(this.state.emails.length === 0) {
+            this.state.formValido = false;
+            alertMensagem += "\n - Adicione ao menos 1 e-mail.";
+        }
+
+        alert(alertMensagem);
+    }
+
     cadastrar = async (e) => {
         e.preventDefault();
 
-        if (this.state.nome !== "" &&
-            this.state.cpf !== "") {
+        let formValido = false;
+
+        this.validaForm();
+        if (this.formValido) {
 
             axios.post('http://localhost:8080/usuario', {
                 id: null,
@@ -150,11 +192,11 @@ class ClienteForm extends Component {
                     <h1>Usuário</h1><br/>
 
                     <label>Nome:</label><br/>
-                    <input type="text" placeholder="Nome do Cliente"
+                    <input type="text" minLength="3" maxLength="100" placeholder="Nome do Cliente"
                            value={this.state.nome} autoFocus
                            onChange={(e) => this.setState({nome: e.target.value})}/><br/>
                     <label>CPF:</label><br/>
-                    <input type="text" placeholder="CPF do cliente"
+                    <input type="text" minLength="11" maxLength="11" placeholder="CPF do cliente"
                            value={this.state.cpf}
                            onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
@@ -210,7 +252,7 @@ class ClienteForm extends Component {
                     <TelefoneForm telefoneFormState={this.telefoneFormState}/>
 
                     <h2>Telefone Adicionados</h2>
-                    {this.state.telefones == '' ?
+                    {this.state.telefones.length === 0 ?
                         <div>Nenhum telefone adicionado</div>
                         :this.state.telefones.map((telefone) =>
                         <div key={telefone.telefone}>+{telefone.ddi} ({telefone.ddd}) {telefone.telefone}</div>)
@@ -221,7 +263,7 @@ class ClienteForm extends Component {
 
                     <EmailForm emailFormState={this.emailFormState}/>
                     <h2>E-mails Adicionados</h2>
-                    {this.state.emails == '' ?
+                    {this.state.emails.length === 0 ?
                         <div>Nenhum e-mail adicionado</div>
                         :
                         this.state.emails.map(email =>
