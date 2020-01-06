@@ -4,6 +4,7 @@ import "./clienteForm.css";
 import axios from 'axios';
 import TelefoneForm from "../TelefoneForm";
 import EmailForm from "../EmailForm";
+import InputMask from "react-input-mask";
 
 class ClienteForm extends Component {
     constructor(props) {
@@ -67,7 +68,7 @@ class ClienteForm extends Component {
             alertMensagem += "\n - O tamanho do campo nome é invalido.";
         }
 
-        if (this.state.cpf.length !== 11) {
+        if (this.state.cpf.length !== 14) {
             alertMensagem += "\n - CPF com tamanho invalido.";
         }
 
@@ -97,7 +98,7 @@ class ClienteForm extends Component {
             axios.post('http://localhost:8080/usuario', {
                 id: null,
                 nome: this.state.nome,
-                cpf: this.state.cpf,
+                cpf: this.state.cpf.replace("-", "").split(".").join(""),
                 senha: "default",
                 idPerfil: 3
             })
@@ -124,7 +125,7 @@ class ClienteForm extends Component {
     persistirEndereco(usuario) {
         axios.post('http://localhost:8080/endereco', {
             id: null,
-            cep: this.state.endereco.cep,
+            cep: this.state.endereco.cep.replace("-",""),
             logradouro: this.state.endereco.logradouro,
             bairro: this.state.endereco.bairro,
             cidade: this.state.endereco.cidade,
@@ -144,7 +145,7 @@ class ClienteForm extends Component {
                 id: null,
                 ddd: telefone.ddd,
                 ddi: telefone.ddi,
-                telefone: telefone.telefone,
+                telefone: telefone.telefone.replace(" ","").replace("-",""),
                 idTipoTelefone: telefone.idTipoTelefone,
                 idUsuario: this.usuario.idUsuario
             })
@@ -195,7 +196,7 @@ class ClienteForm extends Component {
                            value={this.state.nome} autoFocus
                            onChange={(e) => this.setState({nome: e.target.value})}/><br/>
                     <label>CPF:</label><br/>
-                    <input type="text" minLength="11" maxLength="11" placeholder="CPF do cliente"
+                    <InputMask mask="999.999.999-99"type="text" placeholder="CPF do cliente"
                            value={this.state.cpf}
                            onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
@@ -203,12 +204,12 @@ class ClienteForm extends Component {
                     <h1>Endereço</h1><br/>
 
                     <label>CEP:</label><br/>
-                    <input type="text" placeholder="Informe o CEP"
-                           value={this.state.endereco.cep}
-                           onChange={(e) => {
-                               endereco.cep = e.target.value;
-                               this.setState({endereco})
-                           }}/><br/>
+                    <InputMask mask="99999-99" type="text" placeholder="Informe o CEP"
+                               value={this.state.endereco.cep}
+                               onChange={(e) => {
+                                   endereco.cep = e.target.value;
+                                   this.setState({endereco})
+                               }}/><br/>
                     <label>Logradouro:</label><br/>
                     <input type="text" placeholder="Informe o logradouro"
                            value={this.state.endereco.logradouro}
