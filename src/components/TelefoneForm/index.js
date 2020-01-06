@@ -47,22 +47,24 @@ class TelefoneForm extends Component {
             <label>DDI:</label>
             <input type="text" placeholder="DDI"
                    value={this.state.ddi}
+                   className="ddd"
                    onChange={(e) =>
                        this.setState({ddi: e.target.value})
-                   }/>
+                   }/>&nbsp;&nbsp;
             <label>DDD:</label>
             <input type="text" placeholder="DDD"
                    value={this.state.ddd}
+                   className="ddd"
                    onChange={(e) =>
                        this.setState({ddd: e.target.value})
-                   }/>
+                   }/>&nbsp;&nbsp;
             <label>Número:</label>
             <input type="text" placeholder="Número"
                    value={this.state.telefone}
                    onChange={(e) =>
                        this.setState({telefone: e.target.value})
-                   }/>
-            <label>Tipo:</label><br/>
+                   }/>&nbsp;&nbsp;
+            <label>Tipo:</label>
             <select value={this.state.idTipoTelefone}
                     onChange={(e) =>
                         this.setState({idTipoTelefone: e.target.value})
