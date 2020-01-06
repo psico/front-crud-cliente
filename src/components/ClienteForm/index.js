@@ -126,7 +126,7 @@ class ClienteForm extends Component {
     persistirEndereco(usuario) {
         axios.post('http://localhost:8080/endereco', {
             id: null,
-            cep: this.state.endereco.cep.replace("-",""),
+            cep: this.state.endereco.cep.replace("-", ""),
             logradouro: this.state.endereco.logradouro,
             bairro: this.state.endereco.bairro,
             cidade: this.state.endereco.cidade,
@@ -146,7 +146,7 @@ class ClienteForm extends Component {
                 id: null,
                 ddd: telefone.ddd,
                 ddi: telefone.ddi,
-                telefone: telefone.telefone.replace(" ","").replace("-",""),
+                telefone: telefone.telefone.replace(" ", "").replace("-", ""),
                 idTipoTelefone: telefone.idTipoTelefone,
                 idUsuario: this.usuario.idUsuario
             })
@@ -175,6 +175,28 @@ class ClienteForm extends Component {
         });
     }
 
+    consultarCep = (cep) => {
+        let state = {...this.state};
+        let endereco = {...this.state.endereco};
+
+        let cepFormatado = cep.replace("-", "");
+        if (cepFormatado.length === 8) {
+            axios.get("https://viacep.com.br/ws/" + cepFormatado.toString() + "/json/")
+                .then(result => {
+                    endereco.logradouro = result.data.logradouro;
+                    endereco.bairro = result.data.bairro;
+                    endereco.localidade = result.data.localidade;
+                    endereco.uf = result.data.uf;
+
+                    state.endereco = endereco;
+                    this.setState(state);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+
     render() {
         let endereco = {...this.state.endereco};
 
@@ -185,7 +207,7 @@ class ClienteForm extends Component {
                         <h1>Cadrasto de Clientes</h1>&nbsp;
                         <Link className="botao" to="/cliente">Voltar</Link>
                     </div>
-                    <StatusLogin />
+                    <StatusLogin/>
                 </div>
 
                 <form onSubmit={this.cadastrar} className="bloco">
@@ -196,20 +218,22 @@ class ClienteForm extends Component {
                            value={this.state.nome} autoFocus
                            onChange={(e) => this.setState({nome: e.target.value})}/><br/>
                     <label>CPF:</label><br/>
-                    <InputMask mask="999.999.999-99"type="text" placeholder="CPF do cliente"
-                           value={this.state.cpf}
-                           onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
+                    <InputMask mask="999.999.999-99" type="text" placeholder="CPF do cliente"
+                               value={this.state.cpf}
+                               onChange={(e) => this.setState({cpf: e.target.value})}/><br/>
 
                     <br/><br/>
                     <h1>Endereço</h1><br/>
 
                     <label>CEP:</label><br/>
-                    <InputMask mask="99999-99" type="text" placeholder="Informe o CEP"
+                    <InputMask mask="99999-999" type="text" placeholder="Informe o CEP"
                                value={this.state.endereco.cep}
                                onChange={(e) => {
                                    endereco.cep = e.target.value;
                                    this.setState({endereco})
-                               }}/><br/>
+                               }}
+                               onBlur={(e) => this.consultarCep(e.target.value)}
+                    /><br/>
                     <label>Logradouro:</label><br/>
                     <input type="text" placeholder="Informe o logradouro"
                            value={this.state.endereco.logradouro}
